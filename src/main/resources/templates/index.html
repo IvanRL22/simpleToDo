@@ -31,61 +31,27 @@
 
     <header class="mb-5 bg-cyan-400">
         <h1 class="text-center font-semibold text-white">TODO APP</h1>
+        <nav>
+            <ul class="flex flex-row">
+                <li th:each="link: ${navLinks}" class="mr-2 text-white">
+                    <a class="cursor-pointer px-1 hover:bg-cyan-200 hover:text-black"
+                       th:text="${link.text}"
+                       th:hx-get="|${link.link}|"
+                       hx-trigger="click"
+                       hx-target="#main"
+                       hx-swap="innerHTML"></a>
+                <li>
+            </ul>
+        </nav>
     </header>
 
-    <main class="grid grid-cols-1 content-center px-2">
+    <main id="main" class="grid grid-cols-1 content-center px-2"
+        hx-get="/home"
+        hx-trigger="load"
+        hx-swap="innerHTML">
 
-        <div class="mb-3 p-2 text-sm text-center bg-cyan-50 rounded shadow">
-            <p>Write a new task and click add</p>
-            <p>Track your pending tasks easily</p>
-            <p>Never forget anything again!</p>
-        </div>
-
-        <div class="mb-5 grid grid-cols-3">
-            <input type="text"
-                   id="new-task-name"
-                   class="px-2 font-light col-span-2 rounded border-1 border-slate-600 border-solid"
-                   name="name"
-                   placeholder="Add a new task"
-                   oninput="refreshButton()">
-
-            <button id="add-task"
-                    type="button"
-                    disabled="true"
-                    hx-post="/add"
-                    hx-trigger="click"
-                    hx-include="#new-task-name"
-                    hx-target="#taskList"
-                    hx-swap="outerHTML"
-                    class="bg-cyan-600 disabled:bg-gray-300 hover:bg-cyan-700 rounded px-2">
-                    Add</button>
-        </div>
-
-        <div class="border border-gray-400 rounded">
-            <h3 class="font-bold text-center">Current tasks</h3>
-
-            <div id="taskList" th:fragment="taskList" class="px-2">
-                <div th:each="task: ${tasks}" id="task-${task.id}" class="grid grid-cols-3 py-1">
-                    <h6 th:text="${task.name}"
-                        class="col-span-2">Task name</h6>
-                    <button type="button"
-                            th:hx-delete="|/complete/${task.id}|"
-                            hx-trigger="click"
-                            hx-target="#taskList"
-                            hx-swap="outerHTML"
-                            class="bg-cyan-500 hover:bg-cyan-300 rounded px-2">
-                        Complete
-                    </button>
-                </div>
-            </div>
-        </div>
     </main>
 
-    <footer class="absolute inset-x-0 bottom-0 m-2 p-2 rounded bg-slate-200 text-sm">
-        <p>This is a footer</p>
-        <p>There are many like it, but this one is mine</p>
-        <p>Powered by HTMX and Spring</p>
-        <p>Made by Iván Recasens Lahoz</p>
-    </footer>
+    <footer th:replace="~{footer}"></footer>
 
 </body>

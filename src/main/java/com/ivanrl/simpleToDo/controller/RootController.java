@@ -16,13 +16,33 @@ import java.util.Collection;
 @Slf4j
 public class RootController {
 
+    private static final NavBarLink[] navigationLinks = {
+            new NavBarLink("Home", "/home"),
+            new NavBarLink("Tasks", "/tasks")
+    };
+
     private final TaskRepository taskRepository;
 
-    @GetMapping
-    public String home(Model model) {
+    @GetMapping(value = "")
+    public String index(Model model) {
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
+        model.addAttribute("navLinks", navigationLinks);
+        model.addAttribute("isHome", true);
 
         return "index";
+    }
+
+    @GetMapping(value = "home", headers = "HX-Request")
+    public String home(Model model) {
+        return "home";
+    }
+
+    // This should only return a fragment for main element with the tasks
+    @GetMapping(value = "tasks", headers = "HX-Request")
+    public String tasks(Model model) {
+        model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
+
+        return "tasks :: #content";
     }
 
     @PostMapping(value = "add", headers = "HX-Request")
@@ -33,7 +53,7 @@ public class RootController {
         this.taskRepository.save(new Task(newTask.name()));
 
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-        return "index::taskList";
+        return "tasks :: taskList";
     }
 
     @DeleteMapping(value = "complete/{id}", headers = "HX-Request")
@@ -53,4 +73,5 @@ interface TaskRepository extends JpaRepository<Task, Long> {
 }
 
 record NewTask(String name) {}
+record NavBarLink(String text, String link) {}
 

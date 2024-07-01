@@ -1,0 +1,42 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<div id="content">
+    <div class="mb-5 grid grid-cols-3">
+        <input type="text"
+               id="new-task-name"
+               class="px-2 font-light col-span-2 rounded border-1 border-slate-600 border-solid"
+               name="name"
+               placeholder="Add a new task"
+               oninput="refreshButton()">
+
+        <button id="add-task"
+                type="button"
+                disabled="true"
+                hx-post="/add"
+                hx-trigger="click"
+                hx-include="#new-task-name"
+                hx-target="#taskList"
+                hx-swap="outerHTML"
+                class="bg-cyan-600 disabled:bg-gray-300 hover:bg-cyan-700 rounded px-2">
+            Add</button>
+    </div>
+
+    <div class="border border-gray-400 rounded">
+        <h3 class="font-bold text-center">Current tasks</h3>
+
+        <div id="taskList" th:fragment="taskList" class="px-2">
+            <div th:each="task: ${tasks}" class="grid grid-cols-3 py-1">
+                <h6 th:text="${task.name}"
+                    class="col-span-2">Task name</h6>
+                <button type="button"
+                        th:hx-delete="|/complete/${task.id}|"
+                        hx-trigger="click"
+                        hx-target="#taskList"
+                        hx-swap="outerHTML"
+                        class="bg-cyan-500 hover:bg-cyan-300 rounded px-2">
+                    Complete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
