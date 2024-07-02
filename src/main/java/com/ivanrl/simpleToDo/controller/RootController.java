@@ -13,9 +13,9 @@ import java.util.Collection;
 @Controller
 @RequestMapping(value = "/")
 @RequiredArgsConstructor
-@Slf4j
 public class RootController {
 
+    private static final String FRAGMENT_TASKS_TASKLIST = "tasks :: taskList";
     private static final NavBarLink[] navigationLinks = {
             new NavBarLink("Home", "/home"),
             new NavBarLink("Tasks", "/tasks")
@@ -27,7 +27,6 @@ public class RootController {
     public String index(Model model) {
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
         model.addAttribute("navLinks", navigationLinks);
-        model.addAttribute("isHome", true);
 
         return "index";
     }
@@ -37,7 +36,6 @@ public class RootController {
         return "home";
     }
 
-    // This should only return a fragment for main element with the tasks
     @GetMapping(value = "tasks", headers = "HX-Request")
     public String tasks(Model model) {
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
@@ -48,22 +46,21 @@ public class RootController {
     @PostMapping(value = "add", headers = "HX-Request")
     public String addTask(NewTask newTask,
                           Model model) {
-        log.debug("Creating new task: {}", newTask.name());
-
         this.taskRepository.save(new Task(newTask.name()));
 
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-        return "tasks :: taskList";
+
+        return FRAGMENT_TASKS_TASKLIST;
     }
 
     @DeleteMapping(value = "complete/{id}", headers = "HX-Request")
     public String completeTask(@PathVariable Long id,
                              Model model) {
-        log.debug("Completing task {}", id);
-
         this.taskRepository.deleteById(id);
+
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-        return "index::taskList";
+
+        return FRAGMENT_TASKS_TASKLIST;
     }
 }
 

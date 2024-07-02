@@ -1,6 +1,20 @@
 <html xmlns:th="http://www.thymeleaf.org">
 
 <div id="content">
+    <script>
+        htmx.on('#add-task', 'htmx:afterRequest', function (evt) {
+            document.getElementById('new-task-name').value = '';
+            document.getElementById('new-task-name').focus();
+        });
+        function refreshButton() {
+             if(document.getElementById("new-task-name").value === "") {
+                    document.getElementById('add-task').disabled = true;
+                } else {
+                    document.getElementById('add-task').disabled = false;
+                }
+    }
+    </script>
+
     <div class="mb-5 grid grid-cols-3">
         <input type="text"
                id="new-task-name"
