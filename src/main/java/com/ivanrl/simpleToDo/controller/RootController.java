@@ -1,74 +1,56 @@
 package com.ivanrl.simpleToDo.controller;
 
-import com.ivanrl.simpleToDo.Task;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Collection;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping(value = "/")
-@RequiredArgsConstructor
+@RequestMapping
 public class RootController {
 
-    private static final String FRAGMENT_TASKS_TASKLIST = "tasks :: taskList";
-    private static final NavBarLink[] navigationLinks = {
-            new NavBarLink("Home", "/home"),
-            new NavBarLink("Tasks", "/tasks")
-    };
 
-    private final TaskRepository taskRepository;
+    private static NavBarLink[] createNavBarLinks(UserDetails userDetails) {
+        // TODO This way of rendering navlinks should be done in a better way
+        var isAuth = userDetails != null && userDetails.getUsername() != null;
+        return new NavBarLink[] {
+                new NavBarLink("Home", "/home"),
+                new NavBarLink("Tasks", "/tasks", isAuth)
+        };
+    }
 
-    @GetMapping(value = "")
-    public String index(Model model) {
-        model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-        model.addAttribute("navLinks", navigationLinks);
+
+    @GetMapping(value = "/")
+    public String index(Model model,
+                        @AuthenticationPrincipal UserDetails userDetails) {
+        model.addAttribute("navLinks", createNavBarLinks(userDetails));
+        if (userDetails != null) {
+            model.addAttribute("username", userDetails.getUsername());
+        }
 
         return "index";
     }
 
-    @GetMapping(value = "home", headers = "HX-Request")
-    public String home(Model model) {
+    @GetMapping(value = "/home", headers = "HX-Request")
+    public String home() {
         return "home";
     }
 
-    @GetMapping(value = "tasks", headers = "HX-Request")
-    public String tasks(Model model) {
-        model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-
-        return "tasks :: #content";
+    @GetMapping("/error")
+    public String error() {
+        return "error";
     }
 
-    @PostMapping(value = "add", headers = "HX-Request")
-    public String addTask(NewTask newTask,
-                          Model model) {
-        this.taskRepository.save(new Task(newTask.name()));
-
-        model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-
-        return FRAGMENT_TASKS_TASKLIST;
-    }
-
-    @DeleteMapping(value = "complete/{id}", headers = "HX-Request")
-    public String completeTask(@PathVariable Long id,
-                             Model model) {
-        this.taskRepository.deleteById(id);
-
-        model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
-
-        return FRAGMENT_TASKS_TASKLIST;
-    }
-}
-
-interface TaskRepository extends JpaRepository<Task, Long> {
-
-    Collection<Task> findAllByDone(boolean done);
 }
 
 record NewTask(String name) {}
-record NavBarLink(String text, String link) {}
+record NavBarLink(String text, String link, boolean isVisible) {
+
+    public NavBarLink(String text, String link) {
+        this(text, link, true);
+    }
+
+}
 
