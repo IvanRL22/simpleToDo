@@ -1,9 +1,13 @@
 package com.ivanrl.simpleToDo.controller;
 
 import com.ivanrl.simpleToDo.Task;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,10 +39,10 @@ public class TaskController {
         return FRAGMENT_TASKS_TASKLIST;
     }
 
-    @DeleteMapping(value = "/complete/{id}", headers = "HX-Request")
+    @PatchMapping(value = "/complete/{id}", headers = "HX-Request")
     public String completeTask(@PathVariable Long id,
                                Model model) {
-        this.taskRepository.deleteById(id);
+        this.taskRepository.completeTask(id);
 
         model.addAttribute("tasks", this.taskRepository.findAllByDone(false));
 
@@ -48,4 +52,11 @@ public class TaskController {
 
 interface TaskRepository extends JpaRepository<Task, Long> {
     Collection<Task> findAllByDone(boolean done);
+
+    @Transactional
+    @Modifying
+    @Query("""
+            UPDATE Task SET done = TRUE WHERE ID = :id
+            """)
+    void completeTask(@NonNull Long id);
 }

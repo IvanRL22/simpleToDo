@@ -44,7 +44,7 @@
                 <h6 th:text="${task.name}"
                     class="col-span-2">Task name</h6>
                 <button type="button"
-                        th:hx-delete="|/tasks/complete/${task.id}|"
+                        th:hx-patch="|/tasks/complete/${task.id}|"
                         hx-trigger="click"
                         hx-target="#taskList"
                         hx-swap="outerHTML"
