@@ -17,10 +17,13 @@ public class Task {
     @Column(name = "ID")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(name = "NAME", nullable = false)
+
+    @Column(name = "NAME", nullable = false, length = 30)
     private String name;
+
     @Column(name = "DONE")
     private boolean done;
+
     @Column(name = "USERNAME", nullable = false, updatable = false)
     private String username; // TODO Eventually this should be a custom entity
 

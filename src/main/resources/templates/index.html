@@ -7,12 +7,18 @@
 
 <head>
     <title>A simple TODO App</title>
-    <script type="text/javascript" th:src="@{/webjars/htmx.org/2.0.1/dist/htmx.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/htmx.org/2.0.1/dist/htmx.js}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" th:content="${_csrf.token}" />
     <meta name="csrf-header" th:content="${_csrf.headerName}" />
-    </head>
+    <style>
+        ul li.htmx-swapping {
+          opacity: 0;
+          transition: opacity 500ms ease-out;
+        }
+    </style>
+</head>
 
 <body>
 
@@ -63,11 +69,18 @@
         </nav>
     </header>
 
-    <main id="main" class="grid grid-cols-1 content-center px-2"
+    <main class="grid grid-cols-1 content-center px-2"
+          sec:authorize="!isAuthenticated()"
         hx-get="/home"
         hx-trigger="load"
         hx-swap="innerHTML">
+    </main>
 
+    <main class="grid grid-cols-1 content-center px-2"
+          sec:authorize="isAuthenticated()"
+          hx-get="/tasks"
+          hx-trigger="load"
+          hx-swap="innerHTML">
     </main>
 
     <footer th:replace="~{footer}"></footer>

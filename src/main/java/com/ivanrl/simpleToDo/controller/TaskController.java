@@ -6,12 +6,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpServerErrorException;
 
 import java.util.Collection;
 
@@ -19,8 +22,6 @@ import java.util.Collection;
 @RequestMapping("/tasks")
 @RequiredArgsConstructor
 public class TaskController {
-
-    private static final String FRAGMENT_TASKS_TASKLIST = "tasks :: taskList";
 
     private final TaskRepository taskRepository;
 
@@ -33,36 +34,37 @@ public class TaskController {
         return "tasks :: #content";
     }
 
+    @Transactional
     @PostMapping(value = "/add", headers = "HX-Request")
     public String addTask(NewTask newTask,
                           @AuthenticationPrincipal UserDetails user,
                           Model model) {
-        this.taskRepository.save(new Task(newTask.name(), user.getUsername()));
+        var savedEntity = this.taskRepository.save(new Task(newTask.name(), user.getUsername()));
 
-        model.addAttribute("tasks", this.taskRepository.findAllByDoneAndUsername(false, user.getUsername()));
+        model.addAttribute("task", savedEntity);
 
-        return FRAGMENT_TASKS_TASKLIST;
+        return "task :: newTask";
     }
 
+    @Transactional
     @PatchMapping(value = "/complete/{id}", headers = "HX-Request")
-    public String completeTask(@PathVariable Long id,
-                               @AuthenticationPrincipal UserDetails user,
-                               Model model) {
-        this.taskRepository.completeTask(id);
+    public ResponseEntity<Void> completeTask(@PathVariable Long id) {
+        var affectedRows = this.taskRepository.completeTask(id);
+        if (affectedRows != 1) {
+            throw new HttpServerErrorException(HttpStatus.NOT_FOUND, "Task not found");
+        }
 
-        model.addAttribute("tasks", this.taskRepository.findAllByDoneAndUsername(false, user.getUsername()));
-
-        return FRAGMENT_TASKS_TASKLIST;
+        return ResponseEntity.ok().build();
     }
 }
 
 interface TaskRepository extends JpaRepository<Task, Long> {
     Collection<Task> findAllByDoneAndUsername(boolean done, String username);
 
-    @Transactional
+
     @Modifying
     @Query("""
             UPDATE Task SET done = TRUE WHERE ID = :id
             """)
-    void completeTask(@NonNull Long id);
+    int completeTask(@NonNull Long id);
 }

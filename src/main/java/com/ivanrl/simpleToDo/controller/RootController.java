@@ -39,8 +39,7 @@ public class RootController {
     }
 
     @GetMapping("/error")
-    public String error() {
-        return "error";
+    public void error() {
     }
 
 }
