@@ -47,7 +47,7 @@
                        th:hx-get="|${link.link}|"
                        hx-trigger="click"
                        hx-target="#main"
-                       hx-swap="innerHTML"></a>
+                       hx-swap="outerHTML"></a>
                 <li>
 
                 <li class="ml-auto"
@@ -73,14 +73,14 @@
           sec:authorize="!isAuthenticated()"
         hx-get="/home"
         hx-trigger="load"
-        hx-swap="innerHTML">
+        hx-swap="outerHTML">
     </main>
 
     <main class="grid grid-cols-1 content-center px-2"
           sec:authorize="isAuthenticated()"
           hx-get="/tasks"
           hx-trigger="load"
-          hx-swap="innerHTML">
+          hx-swap="outerHTML">
     </main>
 
     <footer th:replace="~{footer}"></footer>

@@ -1,13 +1,19 @@
 <li th:fragment="newTask(task)">
     <div th:fragment="task(task)"
-         class="grid grid-cols-3 py-1">
+         class="grid grid-cols-6 py-1">
         <h6 th:text="${task.name}"
-            class="col-span-2">Task name</h6>
+            class="col-span-4">Task name</h6>
         <button type="button"
                 th:hx-patch="|/tasks/complete/${task.id}|"
                 hx-trigger="click"
-                class="bg-cyan-500 hover:bg-cyan-300 rounded px-2">
-            Complete
+                class="col-span-1 font-bold bg-cyan-500 hover:bg-cyan-300 rounded px-2 mx-1">
+            C
+        </button>
+        <button type="button"
+                th:hx-delete="|/tasks/${task.id}|"
+                hx-trigger="click"
+                class="col-span-1 font-bold bg-red-500 hover:bg-red-300 rounded px-2 mx-1">
+            D
         </button>
     </div>
 </li>

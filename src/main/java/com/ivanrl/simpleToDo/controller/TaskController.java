@@ -31,7 +31,7 @@ public class TaskController {
 
         model.addAttribute("tasks", this.taskRepository.findAllByDoneAndUsername(false, user.getUsername()));
 
-        return "tasks :: #content";
+        return "tasks";
     }
 
     @Transactional
@@ -53,6 +53,13 @@ public class TaskController {
         if (affectedRows != 1) {
             throw new HttpServerErrorException(HttpStatus.NOT_FOUND, "Task not found");
         }
+
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping(value = "/{id}", headers = "HX-Request")
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
+        this.taskRepository.deleteById(id);
 
         return ResponseEntity.ok().build();
     }

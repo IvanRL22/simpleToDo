@@ -1,6 +1,4 @@
-<html xmlns:th="http://www.thymeleaf.org">
-
-<div id="content">
+<main class="grid grid-cols-1 content-center px-2">
     <script>
         htmx.on('#add-task', 'htmx:afterRequest', function (evt) {
             document.getElementById('new-task-name').value = '';
@@ -47,8 +45,8 @@
              hx-target="closest li"
              hx-swap="outerHTML swap:500ms">
             <li th:each="task: ${tasks}"
-                th:insert="task :: task(${task})">
+                th:insert="~{task :: task(${task})}">
             </li>
         </ul>
     </div>
-</div>
+</main>
