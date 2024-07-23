@@ -17,7 +17,9 @@ public class RootController {
         var isAuth = userDetails != null && userDetails.getUsername() != null;
         return new NavBarLink[] {
                 new NavBarLink("Home", "/home"),
-                new NavBarLink("Tasks", "/tasks", isAuth)
+                new NavBarLink("Tasks", "/tasks", isAuth),
+                new NavBarLink("Profile", "/user", isAuth)
+
         };
     }
 

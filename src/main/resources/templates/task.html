@@ -6,13 +6,13 @@
         <button type="button"
                 th:hx-patch="|/tasks/complete/${task.id}|"
                 hx-trigger="click"
-                class="col-span-1 font-bold bg-cyan-500 hover:bg-cyan-300 rounded px-2 mx-1">
+                class="col-span-1 rounded px-2 mx-1 font-bold bg-cyan-500 hover:bg-cyan-300 hover:bg-cyan-700 ">
             C
         </button>
         <button type="button"
                 th:hx-delete="|/tasks/${task.id}|"
                 hx-trigger="click"
-                class="col-span-1 font-bold bg-red-500 hover:bg-red-300 rounded px-2 mx-1">
+                class="col-span-1 rounded px-2 mx-1 font-bold bg-red-500 hover:bg-red-300 focus:bg-red-700">
             D
         </button>
     </div>

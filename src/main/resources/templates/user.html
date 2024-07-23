@@ -1,0 +1,30 @@
+<main class="grid grid-cols-1 content-center px-2">
+    <div id="userInfo"
+         class="grid grid-cols-2 border border-gray-400 rounded">
+        <h3 class="col-span-2 mb-3 font-bold text-center">User details</h3>
+
+        <label for="username">Username</label>
+        <input id="username"
+               disabled
+               th:value="${userInfo.username}">
+
+        <label for="email">Email</label>
+        <input id="email"
+               disabled
+               value="TBD">
+
+        <label for="name">Full name</label>
+        <input id="name"
+               disabled
+               value="TBD">
+    </div>
+
+    <div class="mt-3 p-2 rounded bg-slate-200 text-sm">
+        <p>
+            In the future there will be more customization options for logged users.
+        </p>
+        <p class="pt-1">
+            Thank you for your patience!
+        </p>
+    </div>
+</main>
