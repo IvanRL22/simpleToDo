@@ -35,7 +35,7 @@ public class RootController {
         return "index";
     }
 
-    @GetMapping(value = "/home", headers = "HX-Request")
+    @GetMapping(value = "/home", headers = Paths.HEADER_HX_REQUEST)
     public String home() {
         return "home";
     }

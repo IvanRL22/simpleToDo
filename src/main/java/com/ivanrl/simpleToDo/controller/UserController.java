@@ -1,20 +1,15 @@
 package com.ivanrl.simpleToDo.controller;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/user")
-@RequiredArgsConstructor
+@RequestMapping(value = "/user", headers = Paths.HEADER_HX_REQUEST)
 public class UserController {
-
-    private final UserDetailsService userDetailsService;
 
     @GetMapping
     public String user(@AuthenticationPrincipal UserDetails user,

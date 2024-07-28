@@ -1,0 +1,38 @@
+<main class="grid content-center px-2">
+    <div class="p-2 text-center bg-cyan-100 rounded shadow">
+        <h3 class="mb-5 text-center text-lg font-semibold">We're so glad you're joining us!</h3>
+        <div th:if="${errors}"
+             class="grid my-2 rounded border-2 border-solid border-slate-700 bg-red-100">
+            <span class="text-red-500 text-light"
+                  th:each="error: ${errors}"
+                  th:text="${error}"></span>
+        </div>
+
+        <div class="p-2 mx-10 text-sm bg-cyan-50 rounded shadow">
+            <form hx-post="/auth/signIn"
+                  hx-target="main"
+                  hx-swap="outerHTML"
+                  class="grid grid-cols-1 gap-y-3 place-content-center">
+
+                <input id="username"
+                       type="text"
+                       name="username"
+                       placeholder="Username"
+                       class="px-2 pb-0.5 w-64 font-light col-span-2 rounded border border-solid focus-visible:border-2 focus-visible:border-cyan-700 outline-none"
+                       th:value="${signIn.username}">
+
+                <input id="password"
+                       type="password"
+                       name="password"
+                       placeholder="Password"
+                       class="px-2 pb-0.5 w-64 font-light col-span-2 rounded border border-solid focus-visible:border-2 focus-visible:border-cyan-700 outline-none">
+
+                <div>
+                    <button class="rounded px-2 py-1 bg-cyan-600 hover:bg-cyan-400 focus:bg-cyan-700">
+                        Sign in
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

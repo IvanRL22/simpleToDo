@@ -41,7 +41,6 @@
         <ul id="taskList"
              th:fragment="taskList"
              class="px-2"
-             hx-confirm="Are you sure?"
              hx-target="closest li"
              hx-swap="outerHTML swap:500ms">
             <li th:each="task: ${tasks}"

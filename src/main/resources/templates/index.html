@@ -51,9 +51,19 @@
                 <li>
 
                 <li class="ml-auto">
-                    <a sec:authorize="!isAuthenticated()"
-                       class="cursor-pointer px-1 rounded text-white transition ease-in-out hover:bg-cyan-200 hover:text-black duration-500"
-                       href="/login">Login</a>
+                <div sec:authorize="!isAuthenticated()"
+                     class="grid grid-cols-2 gap-x-4">
+                    <a hx-get="/auth/signIn"
+                       hx-trigger="click"
+                       hx-swap="outerHTML"
+                       hx-target="main"
+                       class="cursor-pointer px-1 rounded text-white transition ease-in-out hover:bg-cyan-200 hover:text-black duration-500">
+                        Sign in
+                    </a>
+                    <a href="/login"
+                       class="cursor-pointer px-1 rounded text-white transition ease-in-out hover:bg-cyan-200 hover:text-black duration-500">
+                        Login</a>
+                </div>
                     <a sec:authorize="isAuthenticated()"
                        class="cursor-pointer px-1 rounded text-white transition ease-in-out hover:bg-cyan-200 hover:text-black duration-500"
                        href="/logout">Logout</a>

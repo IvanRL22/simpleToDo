@@ -19,13 +19,13 @@ import org.springframework.web.client.HttpServerErrorException;
 import java.util.Collection;
 
 @Controller
-@RequestMapping("/tasks")
+@RequestMapping(value = "/tasks", headers = Paths.HEADER_HX_REQUEST)
 @RequiredArgsConstructor
 public class TaskController {
 
     private final TaskRepository taskRepository;
 
-    @GetMapping(headers = "HX-Request")
+    @GetMapping
     public String tasks(@AuthenticationPrincipal UserDetails user,
                         Model model) {
 
@@ -35,7 +35,7 @@ public class TaskController {
     }
 
     @Transactional
-    @PostMapping(value = "/add", headers = "HX-Request")
+    @PostMapping("/add")
     public String addTask(NewTask newTask,
                           @AuthenticationPrincipal UserDetails user,
                           Model model) {
@@ -47,7 +47,7 @@ public class TaskController {
     }
 
     @Transactional
-    @PatchMapping(value = "/complete/{id}", headers = "HX-Request")
+    @PatchMapping("/complete/{id}")
     public ResponseEntity<Void> completeTask(@PathVariable Long id) {
         var affectedRows = this.taskRepository.completeTask(id);
         if (affectedRows != 1) {
@@ -57,7 +57,7 @@ public class TaskController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping(value = "/{id}", headers = "HX-Request")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         this.taskRepository.deleteById(id);
 
