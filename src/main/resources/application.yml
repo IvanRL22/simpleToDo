@@ -2,10 +2,10 @@ spring:
   application:
     name: simpleToDo
   datasource:
-    url: jdbc:h2:file:./src/main/resources/db/data/simpleTodo
-    driverClassName: org.h2.Driver
-    username: simpleToDoUser
-    password: password
+    url: jdbc:postgresql://localhost:5432/simpleToDo
+    driverClassName: org.postgresql.Driver
+    username: simpleToDo_local
+    password: simpleToDo_local
     hikari:
       auto-commit: false
   devtools: # Should only happen on local
@@ -13,11 +13,10 @@ spring:
       enabled: true
     restart:
       enabled: false
-  h2:
-    console:
-      enabled: true # Should only happen on local
   jpa:
-    show-sql: true # Should only happen on local
+    hibernate:
+      ddl-auto: validate
     open-in-view: false
+    show-sql: true # Should only happen on local
 #  thymeleaf:
 #    cache: false

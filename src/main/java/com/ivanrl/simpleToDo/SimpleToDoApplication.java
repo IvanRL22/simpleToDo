@@ -1,6 +1,6 @@
 package com.ivanrl.simpleToDo;
 
-import org.h2.jdbcx.JdbcDataSource;
+import org.postgresql.ds.PGSimpleDataSource;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -24,7 +24,7 @@ public class SimpleToDoApplication {
 
 	@Bean
 	DataSource dataSource() {
-		var ds = new JdbcDataSource();
+		var ds = new PGSimpleDataSource();
 		ds.setURL(dbUrl);
 		ds.setUser(dbUsername);
 		ds.setPassword(dbPassword);

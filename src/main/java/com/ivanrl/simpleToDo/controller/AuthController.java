@@ -1,7 +1,6 @@
 package com.ivanrl.simpleToDo.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -63,8 +62,7 @@ public class AuthController {
         // Set authentication on request to keep the session
         SecurityContext sc = SecurityContextHolder.getContext();
         sc.setAuthentication(auth);
-        HttpSession session = request.getSession(true);
-        session.setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
+        request.getSession(true).setAttribute(SPRING_SECURITY_CONTEXT_KEY, sc);
 
         return "tasks";
     }
