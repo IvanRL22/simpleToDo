@@ -1,33 +1,35 @@
-<main class="grid grid-cols-1 content-center px-2">
-    <h3 class="mb-3 font-bold text-center">User details</h3>
-    <div id="userInfo"
-         class="grid grid-cols-3 border border-gray-400 rounded">
+<main class="flex justify-center px-2">
+    <div class="grow sm:max-w-screen-sm">
+        <h3 class="mb-3 font-bold text-center">User details</h3>
+        <div id="userInfo"
+             class="grid grid-cols-3 border border-gray-400 rounded">
 
-        <label for="username">Username</label>
-        <input id="username"
-               disabled
-               class="col-span-2"
-               th:value="${userInfo.username}">
+            <label for="username">Username</label>
+            <input id="username"
+                   disabled
+                   class="col-span-2"
+                   th:value="${userInfo.username}">
 
-        <label for="email">Email</label>
-        <input id="email"
-               disabled
-               class="col-span-2"
-               value="TBD">
+            <label for="email">Email</label>
+            <input id="email"
+                   disabled
+                   class="col-span-2"
+                   value="TBD">
 
-        <label for="name">Full name</label>
-        <input id="name"
-               disabled
-               class="col-span-2"
-               value="TBD">
-    </div>
+            <label for="name">Full name</label>
+            <input id="name"
+                   disabled
+                   class="col-span-2"
+                   value="TBD">
+        </div>
 
-    <div class="grid gap-y-1 mt-3 mb-3 p-2 text-sm bg-cyan-50 rounded shadow">
-        <p>
-            In the future there will be more customization options for logged users.
-        </p>
-        <p>
-            Thank you for your patience!
-        </p>
+        <div class="grid gap-y-1 mt-3 mb-3 p-2 text-sm bg-cyan-50 rounded shadow">
+            <p>
+                In the future there will be more customization options for logged users.
+            </p>
+            <p>
+                Thank you for your patience!
+            </p>
+        </div>
     </div>
 </main>

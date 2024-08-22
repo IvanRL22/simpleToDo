@@ -1,51 +1,53 @@
-<main class="grid grid-cols-1 content-center px-2">
+<main class="flex justify-center px-2">
     <script>
-        htmx.on('#add-task', 'htmx:afterRequest', function (evt) {
-            document.getElementById('new-task-name').value = '';
-            document.getElementById('new-task-name').focus();
-            document.getElementById('add-task').disabled = true;
-        });
-        function refreshButton() {
-             if(document.getElementById("new-task-name").value === "") {
-                    document.getElementById('add-task').disabled = true;
-                } else {
-                    document.getElementById('add-task').disabled = false;
-                }
-    }
+            htmx.on('#add-task', 'htmx:afterRequest', function (evt) {
+                document.getElementById('new-task-name').value = '';
+                document.getElementById('new-task-name').focus();
+                document.getElementById('add-task').disabled = true;
+            });
+            function refreshButton() {
+                 if(document.getElementById("new-task-name").value === "") {
+                        document.getElementById('add-task').disabled = true;
+                    } else {
+                        document.getElementById('add-task').disabled = false;
+                    }
+        }
     </script>
 
-    <div class="mb-5 grid grid-cols-3">
-        <input type="text"
-               id="new-task-name"
-               class="px-2 pb-0.5 mr-4 font-light col-span-2 rounded border border-solid focus-visible:border-2 focus-visible:border-cyan-700 outline-none"
-               name="name"
-               placeholder="Add a new task"
-               maxlength="30"
-               oninput="refreshButton()">
+    <div class="grow sm:max-w-screen-sm">
+        <div class="mb-5 grid grid-cols-3">
+            <input type="text"
+                   id="new-task-name"
+                   class="px-2 pb-0.5 mr-4 font-light col-span-2 rounded border border-solid focus-visible:border-2 focus-visible:border-cyan-700 outline-none"
+                   name="name"
+                   placeholder="Add a new task"
+                   maxlength="30"
+                   oninput="refreshButton()">
 
-        <button id="add-task"
-                type="button"
-                disabled="true"
-                hx-post="/tasks/add"
-                hx-trigger="click"
-                hx-include="#new-task-name"
-                hx-target="#taskList"
-                hx-swap="beforeend"
-                class="bg-cyan-600 disabled:bg-gray-300 hover:bg-cyan-700 rounded px-2">
-            Add</button>
-    </div>
+            <button id="add-task"
+                    type="button"
+                    disabled="true"
+                    hx-post="/tasks/add"
+                    hx-trigger="click"
+                    hx-include="#new-task-name"
+                    hx-target="#taskList"
+                    hx-swap="beforeend"
+                    class="bg-cyan-600 disabled:bg-gray-300 hover:bg-cyan-700 rounded px-2">
+                Add</button>
+        </div>
 
-    <div class="border border-gray-400 rounded">
-        <h3 class="font-bold text-center">Current tasks</h3>
+        <div class="border border-gray-400 rounded">
+            <h3 class="font-bold text-center">Current tasks</h3>
 
-        <ul id="taskList"
-             th:fragment="taskList"
-             class="px-2"
-             hx-target="closest li"
-             hx-swap="outerHTML swap:500ms">
-            <li th:each="task: ${tasks}"
-                th:insert="~{task :: task(${task})}">
-            </li>
-        </ul>
+            <ul id="taskList"
+                 th:fragment="taskList"
+                 class="px-2"
+                 hx-target="closest li"
+                 hx-swap="outerHTML swap:500ms">
+                <li th:each="task: ${tasks}"
+                    th:insert="~{task :: task(${task})}">
+                </li>
+            </ul>
+        </div>
     </div>
 </main>

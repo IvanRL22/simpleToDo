@@ -73,15 +73,13 @@
         </nav>
     </header>
 
-    <main class="grid grid-cols-1 content-center px-2"
-          sec:authorize="!isAuthenticated()"
+    <main sec:authorize="!isAuthenticated()"
         hx-get="/home"
         hx-trigger="load"
         hx-swap="outerHTML">
     </main>
 
-    <main class="grid grid-cols-1 content-center px-2"
-          sec:authorize="isAuthenticated()"
+    <main sec:authorize="isAuthenticated()"
           hx-get="/tasks"
           hx-trigger="load"
           hx-swap="outerHTML">

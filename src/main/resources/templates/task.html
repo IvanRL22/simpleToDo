@@ -1,6 +1,6 @@
 <li th:fragment="newTask(task)">
     <div th:fragment="task(task)"
-         class="grid grid-cols-6 py-1">
+         class="grid grid-cols-6 py-1 transition ease-in-out hover:bg-zinc-200 duration-300">
         <h6 th:text="${task.name}"
             class="col-span-4">Task name</h6>
         <button type="button"
