@@ -2,10 +2,8 @@ spring:
   application:
     name: simpleToDo
   datasource:
-    url: jdbc:postgresql://localhost:5432/simpleToDo
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/simpleToDo?user=simpleToDo_local&password=simpleToDo_local}
     driverClassName: org.postgresql.Driver
-    username: simpleToDo_local
-    password: simpleToDo_local
     hikari:
       auto-commit: false
   devtools: # Should only happen on local
@@ -18,5 +16,6 @@ spring:
       ddl-auto: validate
     open-in-view: false
     show-sql: true # Should only happen on local
+  port: ${PORT:8080}
 #  thymeleaf:
 #    cache: false
